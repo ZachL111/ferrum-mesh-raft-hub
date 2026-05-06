@@ -1,0 +1,28 @@
+{
+  "repo": "ferrum-mesh-raft-hub",
+  "language": "SQL",
+  "category": "Distributed systems",
+  "goal": "Implement an SQL distributed systems project for raft graph analysis, using node-edge fixtures and cycle and reachability reports.",
+  "weights": {
+    "signal": 4,
+    "slack": 2,
+    "confidence": 2,
+    "drag": 5
+  },
+  "thresholds": {
+    "ship": 205,
+    "watch": 119
+  },
+  "properties": [
+    "raising signal cannot reduce score",
+    "raising drag cannot improve score",
+    "lane labels must match configured thresholds",
+    "golden fixture ids must remain unique"
+  ],
+  "fixture_files": [
+    "fixtures/golden/scoreboard.csv",
+    "fixtures/golden/lane-matrix.csv",
+    "fixtures/fuzz/mutations.csv",
+    "fixtures/fuzz/boundary-cases.jsonl"
+  ]
+}
