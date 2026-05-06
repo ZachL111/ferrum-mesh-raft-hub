@@ -1,0 +1,73 @@
+{
+  "repo": "ferrum-mesh-raft-hub",
+  "language": "SQL",
+  "category": "Distributed systems",
+  "goal": "Implement an SQL distributed systems project for raft graph analysis, using node-edge fixtures and cycle and reachability reports.",
+  "review_model": {
+    "terms": [
+      "quorum health",
+      "lease drift",
+      "replica lag",
+      "membership churn"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "quorum health",
+      "signal": 80,
+      "slack": 26,
+      "drag": 8,
+      "confidence": 52,
+      "score": 214,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "lease drift",
+      "signal": 53,
+      "slack": 33,
+      "drag": 22,
+      "confidence": 84,
+      "score": 157,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "replica lag",
+      "signal": 83,
+      "slack": 27,
+      "drag": 17,
+      "confidence": 79,
+      "score": 221,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "membership churn",
+      "signal": 89,
+      "slack": 29,
+      "drag": 12,
+      "confidence": 78,
+      "score": 249,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "quorum health",
+      "signal": 87,
+      "slack": 35,
+      "drag": 15,
+      "confidence": 53,
+      "score": 217,
+      "lane": "ship"
+    }
+  ]
+}

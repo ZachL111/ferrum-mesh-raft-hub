@@ -1,68 +1,40 @@
 # ferrum-mesh-raft-hub
 
-`ferrum-mesh-raft-hub` is a focused SQL codebase around implement an SQL distributed systems project for raft graph analysis, using node-edge fixtures and cycle and reachability reports. It is meant to be easy to inspect, run, and extend without a hosted service.
+`ferrum-mesh-raft-hub` is a SQL project in distributed systems. Its focus is to implement an SQL distributed systems project for raft graph analysis, using node-edge fixtures and cycle and reachability reports.
 
-## Ferrum Mesh Raft Hub Walkthrough
+## Purpose
 
-I would read the project from the outside in: command, fixture, model, then roadmap. That keeps the distributed systems idea grounded in files that can be checked locally.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## How It Is Put Together
+## Ferrum Mesh Raft Hub Review Notes
 
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying distributed systems behavior without needing a service or database unless the language project itself is SQL. The SQL project uses sqlite fixtures, views, and assertions to keep query behavior inspectable.
+For a quick review, compare `membership churn` with `lease drift` before reading the middle cases.
 
-## Reason For The Project
+## What Is Covered
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+- `fixtures/domain_review.csv` adds cases for quorum health and lease drift.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/ferrum-mesh-raft-walkthrough.md` walks through the case spread.
+- The SQL code includes a review path for `membership churn` and `lease drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Capabilities
+## Implementation Notes
 
-- Uses fixture data to keep quorum behavior changes visible in code review.
-- Includes extended examples for lease timing, including `surge` and `degraded`.
-- Documents message ordering tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
+The core code exposes a scoring path and the added review layer uses `signal`, `slack`, `drag`, and `confidence`. The domain terms are `quorum health`, `lease drift`, `replica lag`, and `membership churn`.
 
-## Data Notes
+The SQL checks add a separate view over the domain review fixture.
 
-`recovery` is the first example I would inspect because it lands on the `accept` path with a score of 198. The broader file also keeps `degraded` at -48 and `surge` at 200, which gives the model a useful low-to-high spread.
-
-## Where Things Live
-
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `schema.sql`: sqlite schema and view definitions
-
-## Getting It Running
-
-Install SQL and run the commands from the repository root. The project does not need credentials or a hosted service.
-
-## Command Examples
+## Command
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Audit Path
 
-## Check The Work
+That command is also the regression path. It verifies the domain cases and catches mismatches between the CSV, metadata, and code.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Limits
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Tradeoffs
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
-
-## Possible Extensions
-
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Add one more distributed systems fixture that focuses on a malformed or borderline input.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.
